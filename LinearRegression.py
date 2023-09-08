@@ -57,4 +57,12 @@ df_train = df[:10 ** 6]
 df_test = df[10 ** 6:]
 len(df_test)
 
-df_train.trip_duration.hist(bins=100, grid=False, )
+plt.figure(figsize=(10, 6), dpi=100)
+plt.hist(df_train.trip_duration, bins=100, color='skyblue', edgecolor='black')
+plt.title('Distribution of Trip Durations')
+plt.xlabel('Trip Duration (seconds)')
+plt.ylabel('Frequency')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+
