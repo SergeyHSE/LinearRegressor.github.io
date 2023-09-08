@@ -39,3 +39,12 @@ df = pd.read_csv('train.zip', compression='zip', header=0, sep=',', quotechar='"
 # You also may read this file downlouded it from kagle on the link above
 path = r"your path"
 df = pd.read_csv(path, header=0, sep=',', quotechar='"')
+
+df.head()
+
+df = df.drop('dropoff_datetime', axis=1)
+
+# Now the dates are written as strings. Let's convert them into python datetime objects.
+# This way we will be able to perform arithmetic operations with dates and pull out the necessary information without working with strings.
+
+df.pickup_datetime = pd.to_datetime(df.pickup_datetime)
