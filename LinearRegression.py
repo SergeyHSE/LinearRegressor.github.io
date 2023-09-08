@@ -48,3 +48,13 @@ df = df.drop('dropoff_datetime', axis=1)
 # This way we will be able to perform arithmetic operations with dates and pull out the necessary information without working with strings.
 
 df.pickup_datetime = pd.to_datetime(df.pickup_datetime)
+
+#sort date
+
+df = df.sort_values(by='pickup_datetime')
+
+df_train = df[:10 ** 6]
+df_test = df[10 ** 6:]
+len(df_test)
+
+df_train.trip_duration.hist(bins=100, grid=False, )
