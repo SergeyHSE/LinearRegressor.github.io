@@ -10,3 +10,6 @@ from sklearn.linear_model import Lasso
 from sklearn.model_selection import GridSearchCV
 import datetime
 pd.set_option('display.max_columns', None)
+
+path = r"your path\train.csv"
+path = path.replace('\\', '/')
