@@ -14,6 +14,7 @@ trip_duration - duration of the trip in seconds
 
 import numpy as np
 import pandas as pd
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
@@ -61,6 +62,16 @@ plt.figure(figsize=(10, 6), dpi=100)
 plt.hist(df_train.trip_duration, bins=100, color='skyblue', edgecolor='black')
 plt.title('Distribution of Trip Durations')
 plt.xlabel('Trip Duration (seconds)')
+plt.ylabel('Frequency')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+# Let's try to take log(1 + x) from the length of the trip. We add one to avoid problems with trips that, for example, ended instantly.
+
+plt.figure(figsize=(10, 6), dpi=100)
+plt.hist(np.log1p(df_train.trip_duration), bins=100, color='skyblue', edgecolor='black')
+plt.title('Distribution of Trip Durations(log scale)')
+plt.xlabel('Log(Trip Duration + 1)')
 plt.ylabel('Frequency')
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.show()
