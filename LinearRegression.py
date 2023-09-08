@@ -25,4 +25,17 @@ from sklearn.model_selection import GridSearchCV
 import datetime
 pd.set_option('display.max_columns', None)
 
+# We can use Google colab to download file or download from this page: https://www.kaggle.com/competitions/nyc-taxi-trip-duration/data?select=train.zip
+
+# For colab:
+!pip install -q kaggle
+from google.colab import files
+uploaded = files.upload()
+!mkdir /root/.kaggle
+!mv kaggle.json /root/.kaggle/kaggle.json
 kaggle competitions download -c nyc-taxi-trip-duration
+df = pd.read_csv('train.zip', compression='zip', header=0, sep=',', quotechar='"')
+
+# You also may read this file downlouded it from kagle on the link above
+path = r"your path"
+df = pd.read_csv(path, header=0, sep=',', quotechar='"')
