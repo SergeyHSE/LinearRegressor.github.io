@@ -109,3 +109,14 @@ plt.title('Pickup Count by Hour of Day')
 plt.tight_layout()
 plt.show()
 
+# Now let's see how the day and the length of the trip are related.
+
+group_by_weekday = df_train.groupby(df_train.pickup_datetime.apply(lambda x: x.date()))
+
+plt.figure(figsize=(14, 8), dpi=100)
+sns.relplot(data=group_by_weekday.log_trip_duration.aggregate('mean'), kind='line', height=6, aspect=2)
+plt.xlabel('Weekday')
+plt.ylabel('Mean Log Trip Duration')
+plt.title('Average Log Trip Duration by Weekday')
+plt.tight_layout()
+plt.show()
