@@ -96,3 +96,16 @@ date_count_plot.set_xticklabels(date_count_plot.get_xticklabels(), rotation=90, 
 plt.tight_layout()
 plt.show()
 
+# Let's see what the distribution by the clock looks like.
+
+df_train['pickup_hour'] = df_train.pickup_datetime.dt.hour
+
+# Create a countplot for pickups by hour
+plt.figure(figsize=(10, 6), dpi=100)
+hour_count_plot = sns.countplot(x=df_train['pickup_hour'], palette='viridis')
+plt.xlabel('Hour of Day')
+plt.ylabel('Count')
+plt.title('Pickup Count by Hour of Day')
+plt.tight_layout()
+plt.show()
+
