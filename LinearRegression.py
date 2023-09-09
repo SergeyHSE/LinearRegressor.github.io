@@ -76,4 +76,15 @@ plt.ylabel('Frequency')
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.show()
 
+df_train['log_trip_duration'] = np.log1p(df_train.trip_duration)
+df_test['log_trip_duration'] = np.log1p(df_test.trip_duration)
+
+#change from list to datetime objects
+
+df.pickup_datetime = pd.to_datetime(df.pickup_datetime)
+
+#Visualization
+#export day withot hours an so on
+
+date_sorted = df_train.pickup_datetime.apply(lambda x: x.date()).sort_values()
 
