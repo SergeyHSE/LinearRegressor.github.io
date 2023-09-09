@@ -83,8 +83,16 @@ df_test['log_trip_duration'] = np.log1p(df_test.trip_duration)
 
 df.pickup_datetime = pd.to_datetime(df.pickup_datetime)
 
-#Visualization
-#export day withot hours an so on
+# Let's draw what the distribution of the number of trips by day looks like.
 
 date_sorted = df_train.pickup_datetime.apply(lambda x: x.date()).sort_values()
+
+plt.figure(figsize=(16, 6), dpi=150)
+date_count_plot = sns.countplot(x=date_sorted, palette='viridis')
+plt.xlabel('Date')
+plt.ylabel('Count')
+plt.title('Pickup Count by Date')
+date_count_plot.set_xticklabels(date_count_plot.get_xticklabels(), rotation=90, fontsize=10)
+plt.tight_layout()
+plt.show()
 
