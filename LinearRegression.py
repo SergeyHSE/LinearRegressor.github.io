@@ -174,3 +174,26 @@ grid_searcher = GridSearchCV(Ridge(),
 grid_searher.best_params_
 mean_squared_error(y_test, grid_searher.predict(X_test))
 
+# Let's build figure corresponding to the number of trips depending on the day of the week according to the training sample.
+
+import calendar
+
+df_train['day_of_week'] = df_train['pickup_datetime'].apply(lambda x: x.weekday())
+
+# Calculate the count of trips for each day of the week
+day_counts = df_train['day_of_week'].value_counts().reset_index()
+day_counts.columns = ['day_of_week', 'trip_count']
+# Map day of the week index to day name
+day_counts['day_of_week'] = day_counts['day_of_week'].map(lambda x: calendar.day_name[x])
+# Sort the DataFrame by the count of trips in descending order
+day_counts = day_counts.sort_values(by='trip_count', ascending=False)
+
+plt.figure(figsize=(10, 8), dpi=100)
+week_count_plot = sns.barplot(x='day_of_week', y='trip_count', data=day_counts, palette='dark:#3498db')
+plt.grid(axis='y', linestyle='--', alpha=0.9)
+plt.title('Count of Trips by Day of the Week (Sorted)', fontsize=16)
+plt.xlabel('Day of the Week', fontsize=14)
+plt.ylabel('Count of Trips', fontsize=14)
+plt.tight_layout()
+plt.show()
+
