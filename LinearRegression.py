@@ -120,3 +120,9 @@ plt.ylabel('Mean Log Trip Duration')
 plt.title('Average Log Trip Duration by Weekday')
 plt.tight_layout()
 plt.show()
+
+"""
+We are gonna prepare the dataset. Let's include the day of the year and the hour of the day in it. We need to write 'create_features' fuction, which
+collect necessary attributes for us in a separate DataFrame.
+"""
+
