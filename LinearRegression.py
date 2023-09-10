@@ -125,4 +125,31 @@ plt.show()
 We are gonna prepare the dataset. Let's include the day of the year and the hour of the day in it. We need to write 'create_features' fuction, which
 collect necessary attributes for us in a separate DataFrame.
 """
+import datetime
+def create_features(data_frame):
+    X = pd.concat([data_frame.pickup_datetime.apply(lambda x: x.timetuple().tm_yday),
+    data_frame.pickup_datetime.apply(lambda x: x.hour)],                  
+    axis=1, keys=['day', 'hour'])
+    
+    return X, data_frame.log_trip_duration
+
+X_train, y_train =  create_features(df_train)
+X_train.shape
+X_train.head()
+X_test, y_test = create_features(df_test)
+
+# Переменная час, хоть и является целым числом, не может трактоваться как вещественная. 
+Дело в том, что после 23 идет 0, и что будет означать коэффициент регрессии в таком случае, совсем не ясно. 
+Поэтому применим к этой переменной one -hot кодирование. В тоже время, переменная день должна остаться вещественной, 
+так как значения из обучающей выборке не встреться нам на тестовом подмножестве.
+
+# We can't use the variable 'hour' like numeric variable, becouse after 23 there is 0.
+# Therefore, we apply 'One-Hot' encoding.
+
+ohe = ColumnTransformer([("One hot", OneHotEncoder(sparse=False), [1] )],remainder="passthrough")
+X_train = ohe.fit_transform(X_train)
+X_test = ohe.fit_transform(X_test)
+X_train.shape
+X_train
+
 
