@@ -89,6 +89,7 @@ date_sorted = df_train.pickup_datetime.apply(lambda x: x.date()).sort_values()
 
 plt.figure(figsize=(16, 6), dpi=150)
 date_count_plot = sns.countplot(x=date_sorted, palette='viridis')
+plt.grid(axis='y', linestyle='--', alpha=0.9)
 plt.xlabel('Date')
 plt.ylabel('Count')
 plt.title('Pickup Count by Date')
@@ -103,6 +104,7 @@ df_train['pickup_hour'] = df_train.pickup_datetime.dt.hour
 # Create a countplot for pickups by hour
 plt.figure(figsize=(10, 6), dpi=100)
 hour_count_plot = sns.countplot(x=df_train['pickup_hour'], palette='viridis')
+plt.grid(axis='y', linestyle='--', alpha=0.9)
 plt.xlabel('Hour of Day')
 plt.ylabel('Count')
 plt.title('Pickup Count by Hour of Day')
