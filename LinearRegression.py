@@ -152,4 +152,25 @@ X_test = ohe.fit_transform(X_test)
 X_train.shape
 X_train
 
+# After that we can use 'Ridge regression' and also select parametrs with GridSearchCV
+
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(X_train, y_train)
+
+from sklearn.metrics import mean_squared_error
+mean_squared_error(y_test, lin_reg.predict(X_test))
+
+#Regularization
+from sklearn.linear_model import Ridge
+ridge = Ridge(alpha=1000).fit(X_train, y_train)
+mean_squared_error(ridge.predict(X_test), y_test)
+
+from sklearn.model_selection import GridSearchCV
+grid_searcher = GridSearchCV(Ridge(),
+                             param_grid={'alpha': np.linspace(100, 750, 10)},
+                             cv=5).fit(X_train, y_train)
+
+grid_searher.best_params_
+mean_squared_error(y_test, grid_searher.predict(X_test))
 
