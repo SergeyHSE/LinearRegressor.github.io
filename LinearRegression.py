@@ -279,5 +279,37 @@ ohe_modify = ColumnTransformer([("One hot", OneHotEncoder(sparse=False), columns
                                remainder="passthrough")
 X_train = ohe_modify.fit_transform(X_train)
 X_test = ohe_modify.transform(X_test)
-print(X_train.shape)
+print('Correct Answer:', X_train.shape)
+
+"""
+Next, we have to scale the only real feature.
+After that, we will train the regression on the Lasso data obtained, we will take 2.65e-05 as the alpha parameter.
+We will find MSE
+"""
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+X_train, y_train =  create_features(df_train)
+X_test, y_test = create_features(df_test)
+
+X_train.columns
+
+categ_fetures = ['hour', 'binary_features', 'weekday']
+num_features = ['day']
+
+final_one_hot = ColumnTransformer([
+    ('One hot', OneHotEncoder(sparse=False), categ_fetures),
+    ('Scaling', StandardScaler(), num_features)
+    ])
+
+pipline = Pipeline(steps=[
+    ('one_hot_with scaling', final_one_hot),
+    ('Lasso', Lasso(alpha=2.65e-05))
+    ])
+
+lasso_model = pipline.fit(X_train, y_train)
+y_pred = lasso_model.predict(X_test)
+
+print('MSE = %.4f' % mean_squared_error(y_test, y_pred))
+
 
