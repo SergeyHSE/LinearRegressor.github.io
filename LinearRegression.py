@@ -240,3 +240,31 @@ for date in target_dates:
 
 df_test.head()
 df_test['binary_feature'].value_counts()
+
+"""
+Now we should modify 'create_features' to concatenate hours, days, weeks and binary vareables.
+"""
+
+def create_features(data_frame):
+    X = pd.concat([data_frame.pickup_datetime.apply(lambda x: x.timetuple().tm_yday),
+                   data_frame.pickup_datetime.apply(lambda x: x.hour),
+                   data_frame.binary_feature,
+                   data_frame.pickup_datetime.apply(lambda x: x.weekday())],
+                   axis=1, keys=['day', 'hour', 'binary_features', 'weekday'])
+    return X, data_frame.log_trip_duration
+
+X_train, y_train =  create_features(df_train)
+X_test, y_test = create_features(df_test)
+X_train.head()
+X_train.tail()
+
+# Apply one-hote encoding again
+
+ohe_modify = ColumnTransformer([("One hot", OneHotEncoder(sparse=False), [1] )],remainder="passthrough")
+X_train = ohe_modify.fit_transform(X_train)
+X_test = ohe_modify.fit_transform(X_test)
+
+# Calculate number of features
+X_train.shape
+
+# We have got 27 features, 
