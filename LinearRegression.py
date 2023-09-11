@@ -242,7 +242,7 @@ df_test.head()
 df_test['binary_feature'].value_counts()
 
 """
-Now we should modify 'create_features' to concatenate hours, days, weeks and binary vareables.
+Now we should modify 'create_features' to concatenate hours, days, weekdays and binary vareables.
 """
 
 def create_features(data_frame):
@@ -267,4 +267,17 @@ X_test = ohe_modify.fit_transform(X_test)
 # Calculate number of features
 X_train.shape
 
-# We have got 27 features, 
+# We have got 27 features, but is the wrong result, because we didn't take into account the days of the week. We should encode them.
+# we should aplly 'create_features' again, because 'One-hot' will not work without it
+
+X_train, y_train =  create_features(df_train)
+X_test, y_test = create_features(df_test)
+
+columns_to_encode = ['hour', 'weekday']
+
+ohe_modify = ColumnTransformer([("One hot", OneHotEncoder(sparse=False), columns_to_encode)],
+                               remainder="passthrough")
+X_train = ohe_modify.fit_transform(X_train)
+X_test = ohe_modify.transform(X_test)
+print(X_train.shape)
+
