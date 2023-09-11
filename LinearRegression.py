@@ -312,4 +312,14 @@ y_pred = lasso_model.predict(X_test)
 
 print('MSE = %.4f' % mean_squared_error(y_test, y_pred))
 
+# Determine how many features were selected
 
+coefficients = lasso_model.named_steps['Lasso'].coef_
+
+# Count features with coefficients not close to zero
+# Tolerance level for considering a feature as non-zero
+
+tolerance = 1e-6  
+selected_features = sum(abs(coeff) > tolerance for coeff in coefficients)
+
+print('Number of selected features:', selected_features)
