@@ -199,3 +199,7 @@ plt.ylabel('Count of Trips', fontsize=14)
 plt.tight_layout()
 plt.show()
 
+"""
+Let's add binary variables that equal 1 for two days with minimum count of trips and 0 for other
+"""
+
