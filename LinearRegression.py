@@ -203,3 +203,16 @@ plt.show()
 Let's add binary variables that equal 1 for two days with minimum count of trips and 0 for other
 """
 
+date_sorted = df.pickup_datetime.apply(lambda x: x.date()).sort_values()
+df['pickup_datetime'].dt.date.value_counts()[-5:]
+
+plt.figure(figsize=(24, 6), dpi=150)  
+date_count_plot = sns.countplot(x=date_sorted, palette='viridis') 
+plt.grid(axis='y', linestyle='--', alpha=0.9)
+plt.xlabel('Date') 
+plt.ylabel('Count') 
+plt.title('Pickup Count by Date')
+date_count_plot.set_xticklabels(date_count_plot.get_xticklabels(), rotation=90, fontsize=10) 
+plt.tight_layout()
+plt.show()
+
