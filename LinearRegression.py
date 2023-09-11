@@ -206,6 +206,7 @@ Let's add binary variables that equal 1 for two days with minimum count of trips
 date_sorted = df.pickup_datetime.apply(lambda x: x.date()).sort_values()
 df['pickup_datetime'].dt.date.value_counts()[-5:]
 
+# We also can look at these days by building the figure
 plt.figure(figsize=(24, 6), dpi=150)  
 date_count_plot = sns.countplot(x=date_sorted, palette='viridis') 
 plt.grid(axis='y', linestyle='--', alpha=0.9)
@@ -216,3 +217,26 @@ date_count_plot.set_xticklabels(date_count_plot.get_xticklabels(), rotation=90, 
 plt.tight_layout()
 plt.show()
 
+# Create target_dates and column 'binary_feture'
+
+target_dates = ['2016-01-24', '2016-01-23']
+df_train['binary_feature'] = 0
+
+# Iterate through the DataFrame and set 'binary_feature' to 1 for target dates
+
+for date in target_dates:
+    df_train.loc[df_train['pickup_datetime'].dt.date == pd.to_datetime(date).date(), 'binary_feature'] = 1
+
+df_train.head()
+df_train['binary_feature'].value_counts()
+
+# Make the same things for test
+
+df_test['binary_feature'] = 0
+df_test.head()
+
+for date in target_dates:
+    df_test.loc[df_test['pickup_datetime'].dt.date == pd.to_datetime(date).date(), 'binary_feature'] = 1
+
+df_test.head()
+df_test['binary_feature'].value_counts()
