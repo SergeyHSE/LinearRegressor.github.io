@@ -54,6 +54,28 @@ df.pickup_datetime = pd.to_datetime(df.pickup_datetime)
 
 df = df.sort_values(by='pickup_datetime')
 
+df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
+
+#sort date
+df = df.sort_values(by='pickup_datetime')
+
+# Let's look at count of passanger by day of week
+# Extract day of the week
+
+df['day_of_week'] = df['pickup_datetime'].dt.day_name()
+
+# Create a countplot
+plt.figure(figsize=(10, 8), dpi=100)
+sns.countplot(x='day_of_week', data=df, hue='passenger_count')
+plt.grid(axis='y', linestyle='--', alpha=0.9)
+plt.xlabel('Day of week')
+plt.ylabel('Count of Passenger')
+plt.title('Passenger Count by Day of Week', fontsize=20)
+# Rotate the x-axis labels for better readability
+plt.xticks(rotation=45)
+plt.show()
+
+
 df_train = df[:10 ** 6]
 df_test = df[10 ** 6:]
 len(df_test)
