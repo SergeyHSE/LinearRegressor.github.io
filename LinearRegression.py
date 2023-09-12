@@ -66,15 +66,42 @@ df['day_of_week'] = df['pickup_datetime'].dt.day_name()
 
 # Create a countplot
 plt.figure(figsize=(10, 8), dpi=100)
-sns.countplot(x='day_of_week', data=df, hue='passenger_count')
+ax = sns.countplot(x='day_of_week', data=df, hue='passenger_count')
 plt.grid(axis='y', linestyle='--', alpha=0.9)
 plt.xlabel('Day of week')
 plt.ylabel('Count of Passenger')
 plt.title('Passenger Count by Day of Week', fontsize=20)
-# Rotate the x-axis labels for better readability
 plt.xticks(rotation=45)
+ax.legend(loc='upper right', bbox_to_anchor=(1.2, 1))
 plt.show()
 
+df['month'] = df['pickup_datetime'].dt.month
+
+
+# Create a line plot
+
+plt.figure(figsize=(12, 8), dpi=100)
+sns.set_palette("husl")
+sns.relplot(
+    hue='day_of_week',
+    x='hour',
+    y='month',
+    data=df.groupby(['day_of_week', 'hour']).count().reset_index(),
+    kind='line',
+    aspect=1.5,
+    height=6,
+    style='day_of_week',
+    markers=True,
+)
+
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.xlabel('Hour')
+plt.ylabel('Count')
+plt.title('Dependence of Month on Hour by Day of Week', fontsize=20)
+#plt.legend(title='Day of Week', loc='upper left', bbox_to_anchor=(1, 1))
+plt.show()
+
+# split df for train and test
 
 df_train = df[:10 ** 6]
 df_test = df[10 ** 6:]
