@@ -132,7 +132,8 @@ def display_map(data, latitude_column, longitude_column, color, circle_radius=10
 
     return m
 
-my_map = display_map(df.sample(1000), 'pickup_latitude', 'pickup_longitude', 'blue')
+my_map = display_map(df.sample(1000), 'pickup_latitude', 'pickup_longitude', 'blue',
+                    circle_radius=200, zoom_start=12, tiles='OpenStreetMap')
 my_map.save('my_map.html')
 
 # To find file 'my_map.html':
