@@ -155,6 +155,9 @@ if os.path.exists(file_path):
 else:
     print(f"The file '{filename}' was not found in the current directory.")
 
+my_map_dropoff = display_map(df.sample(1000), 'dropoff_latitude', 'dropoff_longitude', 'red',
+                             circle_radius=200, zoom_start=12, tiles='OpenStreetMap')
+my_map_dropoff.save('my_map_dropoff.html')
 
 # split df for train and test
 
