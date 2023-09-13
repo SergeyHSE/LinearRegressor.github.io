@@ -117,19 +117,18 @@ from IPython.display import HTML
 import random
 
 # Sample DataFrame
-def display_map(data, latitude_column, longitude_column, color):
+def display_map(data, latitude_column, longitude_column, color, circle_radius=100, zoom_start=10, tiles='Stamen Terrain):
    
     location = (data[latitude_column].mean(), data[longitude_column].mean())
-    m = folium.Map(location=location, zoom_start=10, tiles="Stamen Terrain")
+    m = folium.Map(location=location, zoom_start=zoom_start, tiles=tiles)
 
-    for _, row in data.iterrows():
-        folium.Circle(
-            radius=100,
-            location=(row[latitude_column], row[longitude_column]),
-            color=color,
-            fill_color=color,
-            fill=True
-        ).add_to(m)
+    data.apply(lambda row: folium.Circle(
+        radius=circle_radius,
+        location=(row[latitude_column], row[longitude_column]),
+        color=color,
+        fill_color=color,
+        fill=True
+    ).add_to(m), axis=1)
 
     return m
 
