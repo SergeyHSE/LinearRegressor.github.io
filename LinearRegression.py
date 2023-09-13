@@ -101,6 +101,61 @@ plt.title('Dependence of Month on Hour by Day of Week', fontsize=20)
 #plt.legend(title='Day of Week', loc='upper left', bbox_to_anchor=(1, 1))
 plt.show()
 
+"""
+We can display on map:
+pickup_longitude - the longitude where the meter was engaged
+pickup_latitude - the latitude where the meter was engaged
+dropoff_longitude - the longitude where the meter was disengaged
+dropoff_latitude - the latitude where the meter was disengaged
+"""
+
+!pip install folium
+!pip install --upgrade spyder jupyter folium
+
+import folium
+from IPython.display import HTML
+import random
+
+# Sample DataFrame
+def display_map(data, latitude_column, longitude_column, color):
+   
+    location = (data[latitude_column].mean(), data[longitude_column].mean())
+    m = folium.Map(location=location, zoom_start=10, tiles="Stamen Terrain")
+
+    for _, row in data.iterrows():
+        folium.Circle(
+            radius=100,
+            location=(row[latitude_column], row[longitude_column]),
+            color=color,
+            fill_color=color,
+            fill=True
+        ).add_to(m)
+
+    return m
+
+my_map = display_map(df.sample(1000), 'pickup_latitude', 'pickup_longitude', 'blue')
+my_map.save('my_map.html')
+
+# To find file 'my_map.html':
+
+import os
+
+# Get the current working directory
+current_directory = os.getcwd()
+
+# Specify the filename you're looking for
+filename = 'my_map.html'
+
+# Create the full path to the file by joining the directory and filename
+file_path = os.path.join(current_directory, filename)
+
+# Check if the file exists at the specified path
+if os.path.exists(file_path):
+    print(f"The file '{filename}' is located at: {file_path}")
+else:
+    print(f"The file '{filename}' was not found in the current directory.")
+
+
 # split df for train and test
 
 df_train = df[:10 ** 6]
