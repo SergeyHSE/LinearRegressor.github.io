@@ -178,7 +178,7 @@ marker_cluster_pickup = MarkerCluster(name='Pickup Locations').add_to(my_map_pic
 for _, row in df.sample(1000).iterrows():
     folium.CircleMarker(
         location=(row['dropoff_latitude'], row['dropoff_longitude']),
-        radius=10,  # Increase the radius
+        radius=10, 
         color='red',
         fill=True,
         fill_color='red',
@@ -194,9 +194,19 @@ for _, row in df.sample(1000).iterrows():
         fill_opacity=0.7,
     ).add_to(marker_cluster_pickup)
 
+# Add a layer control to toggle between pickup and dropoff locations
+folium.LayerControl(collapsed=False).add_to(my_map_pickup)
 
+# Save or display the combined map
+my_map_pickup.save('combined_map.html')
 
-# split df for train and test
+folium.LayerControl(collapsed=False).add_to(my_map_dropoff)
+
+my_map_dropoff.save('combined_map.html')
+
+###########################################
+#        split df for train and test      #
+###########################################
 
 df_train = df[:10 ** 6]
 df_test = df[10 ** 6:]
