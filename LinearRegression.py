@@ -159,6 +159,43 @@ my_map_dropoff = display_map(df.sample(1000), 'dropoff_latitude', 'dropoff_longi
                              circle_radius=200, zoom_start=12, tiles='OpenStreetMap')
 my_map_dropoff.save('my_map_dropoff.html')
 
+# We can add marcers on maps
+
+from folium.plugins import MarkerCluster
+
+# Create separate maps for pickup and dropoff locations
+my_map_dropoff = display_map(df.sample(1000), 'dropoff_latitude', 'dropoff_longitude', 'red',
+                             circle_radius=200, zoom_start=14, tiles='OpenStreetMap')
+
+my_map_pickup = display_map(df.sample(1000), 'pickup_latitude', 'pickup_longitude', 'blue',
+                            circle_radius=200, zoom_start=12, tiles="OpenStreetMap")
+
+# Create MarkerCluster objects for each map
+marker_cluster_dropoff = MarkerCluster(name='Dropoff Locations').add_to(my_map_dropoff)
+marker_cluster_pickup = MarkerCluster(name='Pickup Locations').add_to(my_map_pickup)
+
+# Create markers for pickup and dropoff locations and add them to their respective clusters
+for _, row in df.sample(1000).iterrows():
+    folium.CircleMarker(
+        location=(row['dropoff_latitude'], row['dropoff_longitude']),
+        radius=10,  # Increase the radius
+        color='red',
+        fill=True,
+        fill_color='red',
+        fill_opacity=0.7,
+        ).add_to(marker_cluster_dropoff)
+
+    folium.CircleMarker(
+        location=(row['pickup_latitude'], row['pickup_longitude']),
+        radius=5,
+        color='blue',
+        fill=True,
+        fill_color='blue',
+        fill_opacity=0.7,
+    ).add_to(marker_cluster_pickup)
+
+
+
 # split df for train and test
 
 df_train = df[:10 ** 6]
