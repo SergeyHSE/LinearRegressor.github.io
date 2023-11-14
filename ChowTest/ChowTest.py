@@ -1,4 +1,8 @@
 import logging
+from sklearn.linear_model import LinearRegression as lr
+from scipy.stats import f
+import pandas as pd
+import numpy as np
 
 def chowtest(X, y, last_index_in_model_1, first_index_in_model_2, significance_level, dfn=5):
     '''
@@ -29,8 +33,6 @@ def chowtest(X, y, last_index_in_model_1, first_index_in_model_2, significance_l
     # Check indices
     if not X.index.is_monotonic_increasing or not y.index.is_monotonic_increasing:
         logger.warning("Input indices are not monotonic increasing.")
-
-    # ... (other checks)
 
     # Fit linear models and calculate residuals
     residuals_pooled = calculate_residuals(X, y)
@@ -68,12 +70,59 @@ def chowtest(X, y, last_index_in_model_1, first_index_in_model_2, significance_l
 
 
 def calculate_residuals(X, y):
-    # ... (your code for fitting the linear model and calculating residuals)
+    '''
+    This function fits a linear model and calculates residuals.
+
+    Inputs:
+        X: independent variable(s) (Pandas Series' or Pandas DataFrame Column(s)).
+        y: dependent variable (Pandas Series or Pandas DataFrame Column).
+
+    Outputs:
+        residuals: Pandas DataFrame containing error information.
+    '''
+    # fits the linear model:
+    model = lr().fit(X, y)
+    
+    # creates a dataframe with the predicted y in a column called y_hat:
+    summary_result = pd.DataFrame(columns=['y_hat'])
+    yhat_list = [float(i) for i in model.predict(X)]
+    summary_result['y_hat'] = yhat_list  
+    # saves the actual y values in the y_actual column:
+    summary_result['y_actual'] = y.values
+    # calculates the residuals:
+    summary_result['residuals'] = (summary_result.y_actual - summary_result.y_hat)
+    # squares the residuals:
+    summary_result['residuals_sq'] = (summary_result.residuals ** 2)
+    
+    return summary_result
 
 
 def calculate_rss(residuals):
-    # ... (your code for calculating RSS from residuals)
+    '''
+    This function calculates the sum of squared residuals.
+
+    Inputs:
+        residuals: Pandas DataFrame containing error information.
+
+    Outputs:
+        rss: sum of squared residuals (float).
+    '''
+    return residuals['residuals_sq'].sum()
 
 
 def calculate_chow_statistic(rss_pooled, rss1, rss2, num_variables):
-    # ... (your code for calculating the Chow Statistic)
+    '''
+    This function calculates the Chow Statistic.
+
+    Inputs:
+        rss_pooled: RSS for the entire dataset.
+        rss1: RSS for the first period.
+        rss2: RSS for the second period.
+        num_variables: number of independent variables.
+
+    Outputs:
+        chow_statistic: Chow Statistic (float).
+    '''
+    numerator = (rss_pooled - (rss1 + rss2)) / num_variables
+    denominator = (rss1 + rss2) / (X1.shape[0] + X2.shape[0] - 2 * num_variables)
+    return numerator / denominator
