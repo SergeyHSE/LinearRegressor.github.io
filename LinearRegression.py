@@ -76,7 +76,7 @@ ax.legend(loc='upper right', bbox_to_anchor=(1.2, 1))
 plt.show()
 
 df['month'] = df['pickup_datetime'].dt.month
-
+df['hour'] = df['pickup_datetime'].dt.hour
 
 # Create a line plot
 
